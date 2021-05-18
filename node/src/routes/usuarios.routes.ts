@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { getRepository } from 'typeorm';
 import UsuariosController from '../app/controllers/UsuariosController';
-import Usuarios from '../app/models/Usuarios';
 
 const usuariosRouter = Router();
 
@@ -22,24 +21,23 @@ usuariosRouter.post('/', async (req, res) => {
 });
 
 usuariosRouter.get('/', async (req, res) => {
-    const usuariosRepositorio = getRepository(Usuarios);
-    const user = await usuariosRepositorio.find();
-    delete user[0].password;
-    return res.json(user);
+    const usuariosController = new UsuariosController();
+    const usuarios =  await usuariosController.findAll();
+    return res.json(usuarios);
 });
 
 usuariosRouter.get('/:id', async (req, res) => {
-    const usuariosRepositorio = getRepository(Usuarios);
-    const { id } = req.params;
-    const user = await usuariosRepositorio.findOne(id);
-    return res.json(user);
+    const usuariosController = new UsuariosController();
+    const { id } = req.params
+    const usuarios =  await usuariosController.findId(id);
+    return res.json(usuarios);
 });
 
 usuariosRouter.delete('/:id', async (req, res) => {
-    const usuariosRepositorio = getRepository(Usuarios);
-    const { id } = req.params;
-    await usuariosRepositorio.delete(id);
-    return res.send();
+    const usuariosController = new UsuariosController();
+    const { id } = req.params
+    const usuarios =  await usuariosController.delete(id);
+    return res.json(usuarios);
 });
 
 export default usuariosRouter;

@@ -27,6 +27,21 @@ class UsuariosController {
         await usuariosRepository.save(user);
         return user;
     }
+    public async findAll(){
+        const usuariosRepository = getRepository(Usuarios);
+        const usuarios = await usuariosRepository.find();
+        return usuarios;
+    }
+    public async findId(id: string){
+        const usuariosRepository = getRepository(Usuarios);
+        const usuario = await usuariosRepository.findOne({where: {id}, select: ['id', 'nome', 'email', 'created_at', 'updated_at']});
+        return usuario;
+    }
+    public async delete(id: string){
+        const usuariosRepository = getRepository(Usuarios);
+        const usuario = await usuariosRepository.delete(id)
+        return id;
+    }
 }
 
 export default UsuariosController;
